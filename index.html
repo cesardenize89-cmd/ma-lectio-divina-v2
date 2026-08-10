@@ -350,9 +350,9 @@ const gospel=lectures.evangile || null;
       throw new Error("Évangile introuvable");
     }
 
-    const reference=gospel.ref || "Évangile du jour";
-    const title=gospel.titre || "";
-    const content=gospel.contenu || "";
+    const reference=gospel.ref || gospel.reference || "Évangile du jour";
+const title=gospel.titre || gospel.title || "";
+const content=gospel.contenu || gospel.texte || "";
 
     localStorage.setItem(
       "ma-lectio-gospel",
