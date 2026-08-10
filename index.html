@@ -467,9 +467,56 @@ function loadNotes(){
   document.getElementById("journalResolution").innerText=
     resolution || "Aucune note.";
 }
+function updateMeditatioQuestions(){
 
-loadGospel();
+  const box=document.getElementById("meditatioQuestions");
 
+  if(!box){
+    return;
+  }
+
+  const saved=localStorage.getItem("ma-lectio-gospel");
+
+  if(!saved){
+    return;
+  }
+
+  try{
+
+    const gospel=JSON.parse(saved);
+
+    const reference=gospel.reference || "l’Évangile du jour";
+    const title=gospel.title || "";
+
+    const div=document.createElement("div");
+
+    div.innerHTML=gospel.content || "";
+
+    const text=div.textContent
+      .replace(/\s+/g," ")
+      .trim();
+
+    const extrait=text.length>180
+      ? text.substring(0,180)+"…"
+      : text;
+
+    box.innerHTML=`
+      <p><strong>Dans ${reference}${title ? ` — « ${title} »` : ""}, quelle parole ou quel geste de Jésus me touche particulièrement aujourd’hui ?</strong></p>
+
+      <p><strong>À partir de cet Évangile, que me révèle Jésus sur sa manière d’aimer, d’appeler ou de conduire ceux qui le suivent ?</strong></p>
+
+      <p><strong>« ${extrait} » — Quelle réponse concrète cette Parole m’invite-t-elle à donner aujourd’hui ?</strong></p>
+    `;
+
+  }catch(error){
+
+    console.error("Erreur Meditatio :",error);
+
+  }
+}
+loadGospel().then(() => {
+  updateMeditatioQuestions();
+});
 </script>
 
 </body>
