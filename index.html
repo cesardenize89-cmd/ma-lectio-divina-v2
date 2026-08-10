@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f7f3ea">
+<title>Ma Lectio Divina</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#f7f3ea;
+  color:#2d2925;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+header{
+  background:#fffaf2;
+  padding:28px 20px 20px;
+  text-align:center;
+  border-bottom:1px solid #e3d8c8;
+}
+
+header h1{
+  margin:0;
+  font-size:27px;
+  font-weight:700;
+}
+
+header p{
+  margin:8px 0 0;
+  color:#756b62;
+}
+
+main{
+  max-width:700px;
+  margin:auto;
+  padding:20px;
+  padding-bottom:100px;
+}
+
+.card{
+  background:white;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:0 3px 15px rgba(60,45,30,.08);
+}
+
+.eyebrow{
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.08em;
+  color:#8b6f47;
+  text-transform:uppercase;
+}
+
+h2{
+  margin:8px 0;
+  font-size:25px;
+}
+
+h3{
+  margin-top:0;
+  font-size:21px;
+}
+
+.reference{
+  color:#806d5b;
+  font-size:15px;
+  margin-bottom:15px;
+}
+
+.gospel{
+  line-height:1.75;
+  white-space:pre-line;
+  font-size:17px;
+}
+
+button{
+  border:0;
+  border-radius:14px;
+  padding:14px 18px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.primary{
+  width:100%;
+  background:#6d573d;
+  color:white;
+  margin-top:18px;
+}
+
+.secondary{
+  background:#eee6db;
+  color:#4c4035;
+  width:100%;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  border-top:1px solid #ded5ca;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+}
+
+.nav button{
+  flex:1;
+  max-width:170px;
+  background:transparent;
+  color:#6d6259;
+  font-size:13px;
+}
+
+textarea{
+  width:100%;
+  min-height:180px;
+  border:1px solid #ded4c8;
+  border-radius:14px;
+  padding:14px;
+  font:inherit;
+  resize:vertical;
+  background:#fffdf9;
+}
+
+.loading{
+  text-align:center;
+  padding:30px 10px;
+  color:#756b62;
+}
+
+.error{
+  background:#fff0ed;
+  color:#8a4034;
+  border-radius:14px;
+  padding:15px;
+  line-height:1.5;
+}
+
+.step{
+  line-height:1.7;
+}
+
+.hidden{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Ma Lectio Divina</h1>
+  <p>Un temps pour demeurer avec Dieu</p>
+</header>
+
+<main id="app">
+
+  <section id="home">
+    <div class="card">
+      <div class="eyebrow">Évangile du jour</div>
+
+      <div id="gospelBox" class="loading">
+        Chargement de l'Évangile du jour…
+      </div>
+
+      <button class="primary" onclick="showStep('lectio')">
+        COMMENCER MA LECTIO
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>🙏 Ma journée avec Dieu</h3>
+      <p>
+        Prends quelques minutes pour lire lentement la Parole,
+        demeurer avec le Seigneur et répondre à son invitation.
+      </p>
+    </div>
+  </section>
+
+  <section id="lectio" class="hidden">
+    <div class="card step">
+      <div class="eyebrow">Étape 1</div>
+      <h2>Lectio</h2>
+      <p>
+        Je lis lentement l'Évangile. Je m'arrête sur les paroles
+        qui me touchent particulièrement.
+      </p>
+      <button class="primary" onclick="showStep('meditatio')">
+        Continuer vers Meditatio
+      </button>
+    </div>
+  </section>
+
+  <section id="meditatio" class="hidden">
+    <div class="card step">
+      <div class="eyebrow">Étape 2</div>
+      <h2>Meditatio</h2>
+
+      <p><strong>Quelle parole de l'Évangile retient particulièrement mon attention ?</strong></p>
+      <p><strong>Qu'est-ce que Jésus veut me faire comprendre aujourd'hui ?</strong></p>
+      <p><strong>Quelle situation de ma vie cette Parole vient-elle éclairer ?</strong></p>
+
+      <textarea id="meditatioNote"
+        placeholder="Écris ici ce que tu reçois dans la prière…"></textarea>
+
+      <button class="primary" onclick="saveNote('meditatioNote');showStep('oratio')">
+        Continuer vers Oratio
+      </button>
+    </div>
+  </section>
+
+  <section id="oratio" class="hidden">
+    <div class="card step">
+      <div class="eyebrow">Étape 3</div>
+      <h2>Oratio</h2>
+
+      <p>
+        Je réponds au Seigneur avec mes propres mots.
+        Je peux lui rendre grâce, demander pardon,
+        présenter une demande ou simplement lui parler.
+      </p>
+
+      <textarea id="oratioNote"
+        placeholder="Ma prière…"></textarea>
+
+      <button class="primary" onclick="saveNote('oratioNote');showStep('contemplatio')">
+        Continuer vers Contemplatio
+      </button>
+    </div>
+  </section>
+
+  <section id="contemplatio" class="hidden">
+    <div class="card step">
+      <div class="eyebrow">Étape 4</div>
+      <h2>Contemplatio</h2>
+
+      <p>
+        Je reste simplement en présence du Seigneur.
+        Je n'ai rien à produire. Je demeure avec Lui.
+      </p>
+
+      <p style="text-align:center;font-size:28px;margin:30px 0;">
+        « Seigneur Jésus, je demeure avec Toi. »
+      </p>
+
+      <button class="primary" onclick="showStep('resolution')">
+        Continuer
+      </button>
+    </div>
+  </section>
+
+  <section id="resolution" class="hidden">
+    <div class="card step">
+      <div class="eyebrow">Pour aujourd'hui</div>
+      <h2>Ma résolution</h2>
+
+      <p>
+        Quelle petite action concrète puis-je poser aujourd'hui
+        pour vivre cette Parole ?
+      </p>
+
+      <textarea id="resolutionNote"
+        placeholder="Ma résolution du jour…"></textarea>
+
+      <button class="primary" onclick="saveNote('resolutionNote');showStep('home')">
+        Terminer ma Lectio
+      </button>
+    </div>
+  </section>
+
+  <section id="journal" class="hidden">
+    <div class="card">
+      <div class="eyebrow">Mon carnet</div>
+      <h2>Mes notes</h2>
+
+      <p><strong>Meditatio</strong></p>
+      <div id="journalMeditatio"></div>
+
+      <p><strong>Oratio</strong></p>
+      <div id="journalOratio"></div>
+
+      <p><strong>Ma résolution</strong></p>
+      <div id="journalResolution"></div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button onclick="showStep('home')">🏠<br>Accueil</button>
+  <button onclick="showStep('lectio')">📖<br>Lectio</button>
+  <button onclick="showStep('journal');loadNotes()">📔<br>Carnet</button>
+</nav>
+
+<script>
+
+const API="https://api.aelf.org/v1/lectures/";
+
+function today(){
+  const d=new Date();
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,"0");
+  const day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+
+function escapeHTML(text){
+  return String(text ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+async function loadGospel(){
+
+  const box=document.getElementById("gospelBox");
+
+  try{
+
+    const date=today();
+
+    const response=await fetch(
+      API + date + "/france"
+    );
+
+    if(!response.ok){
+      throw new Error("Réponse AELF invalide");
+    }
+
+    const data=await response.json();
+
+    const lectures=data.lectures || [];
+
+    const gospel=lectures.find(
+      lecture => lecture.type === "evangile"
+    );
+
+    if(!gospel){
+      throw new Error("Évangile introuvable");
+    }
+
+    const reference=gospel.ref || "Évangile du jour";
+    const title=gospel.titre || "";
+    const content=gospel.contenu || "";
+
+    localStorage.setItem(
+      "ma-lectio-gospel",
+      JSON.stringify({
+        date,
+        reference,
+        title,
+        content
+      })
+    );
+
+    box.innerHTML=`
+      <div class="reference">
+        ${escapeHTML(reference)}
+      </div>
+
+      <h2>${escapeHTML(title)}</h2>
+
+      <div class="gospel">
+        ${escapeHTML(content)}
+      </div>
+    `;
+
+  }catch(error){
+
+    console.error(error);
+
+    const saved=localStorage.getItem("ma-lectio-gospel");
+
+    if(saved){
+
+      const gospel=JSON.parse(saved);
+
+      box.innerHTML=`
+        <div class="reference">
+          ${escapeHTML(gospel.reference)}
+        </div>
+
+        <h2>${escapeHTML(gospel.title)}</h2>
+
+        <div class="gospel">
+          ${escapeHTML(gospel.content)}
+        </div>
+      `;
+
+    }else{
+
+      box.innerHTML=`
+        <div class="error">
+          Impossible de charger l'Évangile pour le moment.
+          Vérifie ta connexion Internet puis actualise la page.
+        </div>
+      `;
+    }
+  }
+}
+
+function showStep(id){
+
+  document.querySelectorAll("main section")
+    .forEach(section => {
+      section.classList.add("hidden");
+    });
+
+  const target=document.getElementById(id);
+
+  if(target){
+    target.classList.remove("hidden");
+  }
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+function saveNote(id){
+
+  const element=document.getElementById(id);
+
+  if(!element){
+    return;
+  }
+
+  localStorage.setItem(
+    "lectio-" + id,
+    element.value
+  );
+}
+
+function loadNotes(){
+
+  const meditatio=
+    localStorage.getItem("lectio-meditatioNote") || "";
+
+  const oratio=
+    localStorage.getItem("lectio-oratioNote") || "";
+
+  const resolution=
+    localStorage.getItem("lectio-resolutionNote") || "";
+
+  document.getElementById("journalMeditatio").innerText=
+    meditatio || "Aucune note.";
+
+  document.getElementById("journalOratio").innerText=
+    oratio || "Aucune note.";
+
+  document.getElementById("journalResolution").innerText=
+    resolution || "Aucune note.";
+}
+
+loadGospel();
+
+</script>
+
+</body>
+</html>
