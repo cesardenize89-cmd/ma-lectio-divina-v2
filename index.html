@@ -374,7 +374,7 @@ const content=gospel.contenu || gospel.texte || "";
       <h2>${escapeHTML(title)}</h2>
 
       <div class="gospel">
-      ${content}
+    ${content.replace(/<br\s*\/?>/gi,"\n").replace(/<\/p>/gi,"\n").replace(/<p[^>]*>/gi,"")}
       </div>
     `;
 
