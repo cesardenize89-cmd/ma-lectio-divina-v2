@@ -342,9 +342,11 @@ async function loadGospel(){
 
     const data=await response.json();
 
-    const lectures=data.lectures || {};
+    const messes=data.messes || [];
 
-const gospel=lectures.evangile || null;
+const messe=messes.find(m => m.type === "messe") || messes[0];
+
+const gospel=messe?.lectures?.find(l => l.type === "evangile") || null;
 
     if(!gospel){
       throw new Error("Évangile introuvable");
