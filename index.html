@@ -539,27 +539,141 @@ function updateOratioPrayer(){
   try{
     const gospel=JSON.parse(saved);
 
-    const reference=gospel.reference || "l’Évangile du jour";
+    const content=(gospel.content || "")
+      .replace(/<[^>]*>/g," ")
+      .replace(/\s+/g," ")
+      .trim()
+      .toLowerCase();
+
+    let intentions=[];
+
+    if(
+      content.includes("enfant") ||
+      content.includes("petit") ||
+      content.includes("humble") ||
+      content.includes("humilité")
+    ){
+      intentions.push(
+        "Apprends-moi l’humilité et la simplicité du cœur. Aide-moi à accueillir les petits et à reconnaître la valeur de chaque personne."
+      );
+    }
+
+    if(
+      content.includes("perdu") ||
+      content.includes("égaré") ||
+      content.includes("brebis") ||
+      content.includes("chercher")
+    ){
+      intentions.push(
+        "Donne-moi ton cœur de Bon Pasteur. Apprends-moi à ne jamais désespérer de celui qui s’est éloigné et à chercher avec amour celui qui est perdu."
+      );
+    }
+
+    if(
+      content.includes("pardon") ||
+      content.includes("pardonne") ||
+      content.includes("péché") ||
+      content.includes("pécheur")
+    ){
+      intentions.push(
+        "Apprends-moi à recevoir ton pardon et à pardonner à mon tour. Libère mon cœur du ressentiment et fais de moi un instrument de ta miséricorde."
+      );
+    }
+
+    if(
+      content.includes("foi") ||
+      content.includes("croire") ||
+      content.includes("crois") ||
+      content.includes("confiance")
+    ){
+      intentions.push(
+        "Fortifie ma foi. Même lorsque je doute ou que je ne comprends pas, apprends-moi à mettre ma confiance en toi."
+      );
+    }
+
+    if(
+      content.includes("guéris") ||
+      content.includes("guérir") ||
+      content.includes("malade") ||
+      content.includes("maladie") ||
+      content.includes("aveugle") ||
+      content.includes("souffrance")
+    ){
+      intentions.push(
+        "Seigneur, pose ton regard de compassion sur ceux qui souffrent. Apprends-moi aussi à être présent auprès de ceux qui ont besoin de consolation et d'espérance."
+      );
+    }
+
+    if(
+      content.includes("amour") ||
+      content.includes("aimez") ||
+      content.includes("aimer") ||
+      content.includes("miséricorde")
+    ){
+      intentions.push(
+        "Apprends-moi à aimer comme tu aimes. Que mes paroles, mes gestes et mes choix témoignent de ta miséricorde."
+      );
+    }
+
+    if(
+      content.includes("prier") ||
+      content.includes("prière") ||
+      content.includes("demandez") ||
+      content.includes("demander")
+    ){
+      intentions.push(
+        "Apprends-moi à prier avec confiance et persévérance. Que ma prière devienne un véritable dialogue avec toi."
+      );
+    }
+
+    if(
+      content.includes("servir") ||
+      content.includes("service") ||
+      content.includes("serviteur")
+    ){
+      intentions.push(
+        "Apprends-moi à servir avec générosité et sans rechercher les honneurs. Fais de ma vie un don pour les autres."
+      );
+    }
+
+    if(
+      content.includes("paix") ||
+      content.includes("paisible") ||
+      content.includes("paix")
+    ){
+      intentions.push(
+        "Dépose ta paix dans mon cœur et apprends-moi à devenir un artisan de paix autour de moi."
+      );
+    }
+
+    if(intentions.length===0){
+      intentions.push(
+        "Seigneur Jésus, fais-moi entrer plus profondément dans le mystère de ta Parole. Montre-moi ce que tu veux transformer dans ma vie aujourd’hui et donne-moi la grâce de répondre à ton appel."
+      );
+    }
 
     box.innerHTML=`
       <h3>Prière avec l’Évangile du jour</h3>
 
       <p>
         Seigneur Jésus,
-        à travers ton Évangile ${reference},
-        viens éclairer mon cœur.
-        Que ta Parole transforme ma manière de vivre
-        et m’apprenne à te suivre aujourd’hui.
+        ta Parole me rejoint aujourd’hui.
+        Ouvre mon cœur afin que je ne me contente pas de l’entendre,
+        mais que je la laisse transformer ma vie.
       </p>
 
+      ${intentions.map(intention => `
+        <p>${intention}</p>
+      `).join("")}
+
       <p>
-        Seigneur, montre-moi ce que tu veux me dire
-        aujourd’hui à travers cette Parole.
-        Donne-moi la grâce de l’accueillir
-        et de la mettre en pratique.
+        Donne-moi la grâce de vivre aujourd’hui
+        ce que tu me demandes à travers ton Évangile.
+        Que ma vie devienne une réponse à ton amour.
         Amen.
       </p>
     `;
+
   }catch(error){
     console.error("Erreur Oratio :",error);
   }
