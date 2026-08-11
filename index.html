@@ -773,9 +773,11 @@ function updateOratioPrayer(){
   updateResolution();
 });
   function updateResolution(){
+
+  const question=document.getElementById("resolutionQuestion");
   const box=document.getElementById("resolutionNote");
 
-  if(!box){
+  if(!question || !box){
     return;
   }
 
@@ -786,9 +788,11 @@ function updateOratioPrayer(){
   }
 
   try{
+
     const gospel=JSON.parse(saved);
+
     const content=(gospel.content || "")
-      .replace(/<[A^>]*>/g," ")
+      .replace(/<[^>]*>/g," ")
       .replace(/\s+/g," ")
       .trim()
       .toLowerCase();
@@ -796,12 +800,23 @@ function updateOratioPrayer(){
     let prompt="Quelle petite action concrète puis-je poser aujourd’hui pour vivre cette Parole ?";
 
     if(
+      content.includes("enfant") ||
+      content.includes("petit") ||
+      content.includes("petite") ||
+      content.includes("humble") ||
+      content.includes("humilité")
+    ){
+      prompt="Aujourd’hui, comment puis-je devenir plus petit devant Dieu et accueillir davantage les autres, particulièrement ceux que je risque de négliger ?";
+    }
+
+    else if(
       content.includes("pardon") ||
       content.includes("pardonne") ||
       content.includes("pardonner")
     ){
       prompt="Aujourd’hui, à qui puis-je choisir de pardonner concrètement ?";
     }
+
     else if(
       content.includes("aime") ||
       content.includes("amour") ||
@@ -809,6 +824,7 @@ function updateOratioPrayer(){
     ){
       prompt="Aujourd’hui, comment puis-je poser un acte concret d’amour ?";
     }
+
     else if(
       content.includes("prie") ||
       content.includes("prier") ||
@@ -816,12 +832,14 @@ function updateOratioPrayer(){
     ){
       prompt="Aujourd’hui, quel temps concret vais-je prendre pour prier ?";
     }
+
     else if(
       content.includes("paix") ||
       content.includes("paisible")
     ){
       prompt="Aujourd’hui, quel geste concret puis-je poser pour accueillir et transmettre la paix ?";
     }
+
     else if(
       content.includes("confiance") ||
       content.includes("foi") ||
@@ -829,6 +847,7 @@ function updateOratioPrayer(){
     ){
       prompt="Aujourd’hui, dans quelle situation vais-je choisir concrètement de faire confiance à Dieu ?";
     }
+
     else if(
       content.includes("servir") ||
       content.includes("service") ||
@@ -837,11 +856,16 @@ function updateOratioPrayer(){
       prompt="Aujourd’hui, quel service concret puis-je rendre à quelqu’un ?";
     }
 
-    box.placeholder=prompt;
+    question.textContent=prompt;
+
+    box.placeholder="Ma résolution du jour…";
 
   }catch(error){
+
     console.error("Erreur Résolution :",error);
+
   }
+
 }
 </script>
 
