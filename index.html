@@ -523,7 +523,48 @@ function updateMeditatioQuestions(){
 
   }
 }
-loadGospel().then(() => {
+function updateOratioPrayer(){
+  const box=document.getElementById("oratioPrayer");
+
+  if(!box){
+    return;
+  }
+
+  const saved=localStorage.getItem("ma-lectio-gospel");
+
+  if(!saved){
+    return;
+  }
+
+  try{
+    const gospel=JSON.parse(saved);
+
+    const reference=gospel.reference || "l’Évangile du jour";
+
+    box.innerHTML=`
+      <h3>Prière avec l’Évangile du jour</h3>
+
+      <p>
+        Seigneur Jésus,
+        à travers ton Évangile ${reference},
+        viens éclairer mon cœur.
+        Que ta Parole transforme ma manière de vivre
+        et m’apprenne à te suivre aujourd’hui.
+      </p>
+
+      <p>
+        Seigneur, montre-moi ce que tu veux me dire
+        aujourd’hui à travers cette Parole.
+        Donne-moi la grâce de l’accueillir
+        et de la mettre en pratique.
+        Amen.
+      </p>
+    `;
+  }catch(error){
+    console.error("Erreur Oratio :",error);
+  }
+}
+  loadGospel().then(() => {
   updateMeditatioQuestions();
 });
 </script>
