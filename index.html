@@ -717,66 +717,51 @@ function updateOratioPrayer(){
         const content=(gospel.content || "")
             .replace(/<[^>]*>/g," ")
             .replace(/\s+/g," ")
-            .trim()
-            .toLowerCase();
+            .trim();
 
-        let contemplation="";
+        if(!content){
+            return;
+        }
 
-        if(
-            content.includes("enfant") ||
-            content.includes("petit") ||
-            content.includes("humble") ||
-            content.includes("humilité")
-        ){
-            contemplation="Seigneur Jésus, je me tiens simplement devant toi. Je contemple ton appel à devenir comme un petit enfant et je laisse ton invitation à l’humilité descendre dans mon cœur. Je n’ai rien à prouver devant toi. Je demeure avec toi et je te laisse transformer mon cœur.";
-        }
-        else if(
-            content.includes("pardonne") ||
-            content.includes("pardon") ||
-            content.includes("péché") ||
-            content.includes("pécheur")
-        ){
-            contemplation="Seigneur Jésus, je demeure en ta présence et je contemple ta miséricorde. Je dépose devant toi ce qui a besoin d’être pardonné et je laisse ton amour rejoindre mon cœur. Dans le silence, je reçois ton pardon et je demeure avec toi.";
-        }
-        else if(
-            content.includes("foi") ||
-            content.includes("croire") ||
-            content.includes("confiance")
-        ){
-            contemplation="Seigneur Jésus, je demeure devant toi dans la foi. Je contemple ta présence et je dépose entre tes mains ce que je ne comprends pas encore. Je n’ai rien à produire : je veux simplement demeurer avec toi et apprendre à te faire confiance.";
-        }
-        else if(
-            content.includes("amour") ||
-            content.includes("aimez") ||
-            content.includes("aimer") ||
-            content.includes("miséricorde")
-        ){
-            contemplation="Seigneur Jésus, je demeure dans ton amour. Je contemple ta Parole et je laisse ton amour toucher mon cœur. Sans chercher à faire beaucoup, je reste simplement avec toi et je reçois ton invitation à aimer davantage.";
-        }
-        else if(
-            content.includes("prier") ||
-            content.includes("prière") ||
-            content.includes("demandez")
-        ){
-            contemplation="Seigneur Jésus, je demeure avec toi dans le silence. Je contemple ton invitation à prier et je dépose devant toi mes désirs, mes inquiétudes et mes demandes. Je n’ai rien à produire. Je reste simplement en ta présence.";
-        }
-        else if(
-            content.includes("paix") ||
-            content.includes("paisible")
-        ){
-            contemplation="Seigneur Jésus, je demeure dans ta présence et je contemple la paix que tu veux donner à mon cœur. Je laisse mes inquiétudes s’apaiser peu à peu et je reste silencieusement avec toi.";
-        }
-        else{
-            contemplation="Seigneur Jésus, je demeure simplement avec toi. Je contemple ta Parole entendue aujourd’hui et je la laisse résonner dans mon cœur. Je n’ai rien à produire ni à expliquer. Je reste en ta présence et je te laisse me parler dans le silence.";
+        let extrait=content;
+
+        if(extrait.length>240){
+            extrait=extrait.substring(0,240);
+            const dernierePhrase=extrait.lastIndexOf(".");
+            if(dernierePhrase>80){
+                extrait=extrait.substring(0,dernierePhrase+1);
+            }else{
+                extrait=extrait+"…";
+            }
         }
 
         box.innerHTML=`
             <p>
-                ${contemplation}
+                Je reste simplement en ta présence, Seigneur Jésus.
+                Je me rends disponible à ta Parole et je laisse résonner
+                en moi ce que tu veux me donner aujourd’hui.
+            </p>
+
+            <p>
+                « ${extrait} »
+            </p>
+
+            <p>
+                Seigneur Jésus, que cette Parole ne reste pas seulement
+                dans mon esprit. Fais-la descendre dans mon cœur.
+                Apprends-moi à demeurer avec toi et à accueillir
+                ce que tu veux transformer en moi aujourd’hui.
+            </p>
+
+            <p>
+                Je reste quelques instants en silence devant toi.
+                Je n’ai rien à produire, rien à réussir.
+                Je demeure simplement avec toi.
             </p>
 
             <p style="text-align:center;">
-                « Seigneur Jésus, je demeure avec toi. »
+                « Seigneur Jésus, fais grandir en moi
+                ce que ta Parole vient de déposer dans mon cœur. »
             </p>
         `;
 
@@ -784,7 +769,6 @@ function updateOratioPrayer(){
         console.error("Erreur Contemplatio :",error);
     }
 }
-  loadGospel().then(() => {
   updateMeditatioQuestions();
   updateOratioPrayer();  
     updateContemplatio();
