@@ -766,6 +766,7 @@ function updateOratioPrayer(){
         console.error("Erreur Contemplatio :",error);
     }
 }
+  loadGospel().then(() => {
   updateMeditatioQuestions();
   updateOratioPrayer();  
     updateContemplatio();
